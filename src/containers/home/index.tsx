@@ -81,7 +81,7 @@ export const Home = () => {
 
   return (
     <>
-      <Header />
+      <Header active={active} />
       <main className="relative">
         <section className="relative mx-auto my-0 w-full">
           <div className="absolute top-0 left-0 h-[953px] w-full overflow-hidden">
@@ -97,7 +97,7 @@ export const Home = () => {
                       className="absolute top-0 left-0 h-full max-h-screen w-full origin-[38%_0] object-cover object-[0_64.5%] transition-opacity duration-500 ease-out"
                       src={IMG_1}
                       alt="BLISSO"
-                      style={{ opacity: 1 }}
+                      style={{ opacity: 1, scale: active === 0 ? 1.24 : 1 }}
                     />
                     <img
                       className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-500 ease-out"
