@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react'
 import { IMG_1, IMG_2, IMG_3, IMG_4 } from '@public/index'
 import gsap from 'gsap'
 import { useCallback, useEffect, useRef, useState } from 'react'
+
 export const Home = () => {
   const boxRef = useRef<HTMLDivElement>(null)
   const figRef = useRef<HTMLDivElement>(null)
@@ -51,36 +52,30 @@ export const Home = () => {
     if (!figRef.current || !boxRef.current) return
 
     const images = Array.from(figRef.current.children) as HTMLElement[]
-    images.forEach((img, index) => {
-      gsap.set(img, {
-        opacity: 0,
-      })
-    })
 
     if (active === 0 || active === 1) {
-      gsap.to(images[0], {
-        opacity: 1,
-        scale: active === 0 ? 1.24 : 1,
-        duration: 0.5,
-        ease: 'power2.out',
+      images.forEach((img, index) => {
+        gsap.to(img, {
+          opacity: index === 0 ? 1 : 0,
+          duration: 0.5,
+          ease: 'none',
+        })
       })
     } else {
-      gsap.to(images[active - 1], {
-        opacity: 1,
-
-        duration: 0.5,
-        ease: 'power2.out',
+      images.forEach((img, index) => {
+        gsap.to(img, {
+          opacity: index === active - 1 ? 1 : 0,
+          duration: 0.5,
+          ease: 'none',
+        })
       })
     }
+
     gsap.to(boxRef.current, {
       width: active !== 0 ? '50%' : '100%',
-      ease: 'power2.out',
-      duration: 0.5,
-    })
-
-    gsap.to(figRef.current, {
       borderRadius: active !== 0 ? '0 29px 29px 0' : '0',
       duration: 0.5,
+      ease: 'power2.out',
     })
   }, [active])
 
@@ -92,27 +87,35 @@ export const Home = () => {
           <div className="absolute top-0 left-0 h-[953px] w-full overflow-hidden">
             <div className="relative">
               <div className="absolute top-0 left-0 h-full w-full">
-                <div className="fixed top-0 h-full w-full overflow-hidden" ref={boxRef}>
+                <div
+                  className="fixed top-0 h-full w-full overflow-hidden"
+                  style={{ transition: active === 0 ? 'border-radius 1s' : '' }}
+                  ref={boxRef}
+                >
                   <figure className="relative h-full max-h-screen w-full overflow-hidden" ref={figRef}>
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full origin-[38%_0] object-cover object-[0_64.5%] transition-opacity duration-300 ease-linear"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full origin-[38%_0] object-cover object-[0_64.5%] transition-opacity duration-500 ease-out"
                       src={IMG_1}
                       alt="BLISSO"
+                      style={{ opacity: 1 }}
                     />
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-300 ease-linear"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-500 ease-out"
                       src={IMG_2}
                       alt="JISOO"
+                      style={{ opacity: 0 }}
                     />
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-300 ease-linear"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-500 ease-out"
                       src={IMG_3}
                       alt="FILMOGRAPHY"
+                      style={{ opacity: 0 }}
                     />
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-300 ease-linear"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-500 ease-out"
                       src={IMG_4}
                       alt="NEWS"
+                      style={{ opacity: 0 }}
                     />
                   </figure>
                 </div>
