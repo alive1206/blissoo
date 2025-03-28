@@ -92,7 +92,16 @@ export const Home = () => {
                   style={{ transition: active === 0 ? 'border-radius 1s' : '' }}
                   ref={boxRef}
                 >
-                  <figure className="relative h-full max-h-screen w-full overflow-hidden" ref={figRef}>
+                  <figure
+                    className="transition-clip-path relative h-full max-h-screen w-full overflow-hidden duration-500 ease-out"
+                    ref={figRef}
+                    style={{
+                      clipPath:
+                        active === 0
+                          ? 'none'
+                          : 'path("M 0 0 L 478.5 0 L 478.5 388.334 C 478.5 397.713 471.131 401.732 468.452 401.732 C 467.916 401.732 467.916 402.268 468.452 402.268 C 471.131 402.268 478.5 406.287 478.5 415.666 L 478.5 415.666 L 478.5 804 L 0 804 Z")',
+                    }}
+                  >
                     <img
                       className="absolute top-0 left-0 h-full max-h-screen w-full origin-[38%_0] object-cover object-[0_64.5%] transition-opacity duration-500 ease-out"
                       src={IMG_1}
