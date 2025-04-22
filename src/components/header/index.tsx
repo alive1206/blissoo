@@ -48,7 +48,7 @@ export const Header: React.FC<Props> = ({ active }) => {
             </div>
             <div
               className={cn(
-                'absolute -bottom-[.2vw] h-[1.5px] w-[30px] p-[0_.2vw] transition-transform duration-300 ease-linear',
+                'absolute -bottom-[.1vw] h-[1.5px] w-[30px] p-[0_.2vw] transition-transform duration-300 ease-linear',
                 hoveredLang === 'KR' || (langState === 'KR' && hoveredLang === null)
                   ? '-translate-x-[2px]'
                   : 'translate-x-[31px]',

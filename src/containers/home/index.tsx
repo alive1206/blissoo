@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 export const Home = () => {
   const boxRef = useRef<HTMLDivElement>(null)
   const figRef = useRef<HTMLDivElement>(null)
+  const bgRef = useRef<HTMLUListElement>(null)
   gsap.registerPlugin(useGSAP)
 
   const [active, setActive] = useState(0)
@@ -49,9 +50,10 @@ export const Home = () => {
   }, [active, goToSection, isScrolling])
 
   useEffect(() => {
-    if (!figRef.current || !boxRef.current) return
+    if (!figRef.current || !boxRef.current || !bgRef.current) return
 
     const images = Array.from(figRef.current.children) as HTMLElement[]
+    const backgrounds = Array.from(bgRef.current.children) as HTMLElement[]
 
     if (active === 0 || active === 1) {
       images.forEach((img, index) => {
@@ -71,11 +73,38 @@ export const Home = () => {
       })
     }
 
+    if (active === 0 || active === 1) {
+      backgrounds.forEach((bg, index) => {
+        gsap.to(bg, {
+          opacity: index === 0 ? 1 : 0,
+          duration: 0.5,
+          ease: 'none',
+        })
+      })
+    } else {
+      backgrounds.forEach((bg, index) => {
+        gsap.to(bg, {
+          opacity: index === active - 1 ? 1 : 0,
+          duration: 0.5,
+          ease: 'none',
+        })
+      })
+    }
+
+    gsap.to(figRef.current, {
+      clipPath:
+        active === 0
+          ? 'path("M 0 0 L 1920 0 L 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 L 1920 476.5 L 1920 953 L 0 953 Z")'
+          : 'path("M 0 0 L 960 0 L 960 449.082 C 960 467.898 945.216 475.962 939.84 475.962 C 938.765 475.962 938.765 477.038 939.84 477.038 C 945.216 477.038 960 485.102 960 503.918 L 960 503.918 L 960 953 L 0 953 Z")',
+      duration: 0.5,
+      ease: 'none',
+    })
+
     gsap.to(boxRef.current, {
       width: active !== 0 ? '50%' : '100%',
       borderRadius: active !== 0 ? '0 29px 29px 0' : '0',
       duration: 0.5,
-      ease: 'power2.out',
+      ease: 'none',
     })
   }, [active])
 
@@ -84,8 +113,8 @@ export const Home = () => {
       <Header active={active} />
       <main className="relative">
         <section className="relative mx-auto my-0 w-full">
-          <div className="absolute top-0 left-0 h-[953px] w-full overflow-hidden">
-            <div className="relative">
+          <div className="absolute top-0 left-0 h-screen w-full overflow-hidden">
+            <div className="relative h-full">
               <div className="absolute top-0 left-0 h-full w-full">
                 <div
                   className="fixed top-0 h-full w-full overflow-hidden"
@@ -93,44 +122,75 @@ export const Home = () => {
                   ref={boxRef}
                 >
                   <figure
-                    className="transition-clip-path relative h-full max-h-screen w-full overflow-hidden duration-500 ease-out"
+                    className="relative h-full max-h-screen w-full overflow-hidden"
                     ref={figRef}
                     style={{
                       clipPath:
-                        active === 0
-                          ? 'none'
-                          : 'path("M 0 0 L 478.5 0 L 478.5 388.334 C 478.5 397.713 471.131 401.732 468.452 401.732 C 467.916 401.732 467.916 402.268 468.452 402.268 C 471.131 402.268 478.5 406.287 478.5 415.666 L 478.5 415.666 L 478.5 804 L 0 804 Z")',
+                        'path("M 0 0 L 1920 0 L 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 L 1920 476.5 L 1920 953 L 0 953 Z")',
                     }}
                   >
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full origin-[38%_0] object-cover object-[0_64.5%] transition-opacity duration-500 ease-out"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full origin-[38%_0] scale-100 object-cover object-[0_64.5%] transition-opacity duration-300 ease-linear"
                       src={IMG_1}
                       alt="BLISSO"
-                      style={{ opacity: 1, scale: active === 0 ? 1.24 : 1 }}
+                      style={{ opacity: 1, scale: active === 0 ? 1.24 : 1, transition: 'scale .5s linear' }}
                     />
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-500 ease-out"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-300 ease-linear"
                       src={IMG_2}
                       alt="JISOO"
                       style={{ opacity: 0 }}
                     />
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-500 ease-out"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-300 ease-linear"
                       src={IMG_3}
                       alt="FILMOGRAPHY"
                       style={{ opacity: 0 }}
                     />
                     <img
-                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-500 ease-out"
+                      className="absolute top-0 left-0 h-full max-h-screen w-full object-cover transition-opacity duration-300 ease-linear"
                       src={IMG_4}
                       alt="NEWS"
                       style={{ opacity: 0 }}
                     />
                   </figure>
+                  <ul className="absolute top-1/2 right-[38px] z-[101] list-none text-right text-[20px] font-medium text-white">
+                    <li className="-translate-y-1/2">BLISSO</li>
+                    <li>JISOO</li>
+                    <li>FILMOGRAPHY</li>
+                    <li>NEWS</li>
+                  </ul>
                 </div>
+              </div>
+
+              <div className="relative top-0 left-0 h-full w-full">
+                <div className="absolute top-0 left-0 h-full w-full">
+                  <ul className="sticky top-0 left-0 -z-50 h-full w-full list-none text-right" ref={bgRef}>
+                    <li
+                      className="absolute top-0 left-0 h-full w-full overflow-hidden bg-[#E4E2EE]"
+                      style={{ opacity: 1 }}
+                    ></li>
+                    <li
+                      className="absolute top-0 left-0 h-full w-full overflow-hidden bg-[#9c98b9]"
+                      style={{ opacity: 0 }}
+                    ></li>
+                    <li
+                      className="absolute top-0 left-0 h-full w-full overflow-hidden bg-[#E4E2EE]"
+                      style={{ opacity: 0 }}
+                    ></li>
+                    <li
+                      className="absolute top-0 left-0 h-full w-full overflow-hidden bg-[#E4E2EE]"
+                      style={{ opacity: 0 }}
+                    ></li>
+                  </ul>
+                </div>
+
+                <div></div>
               </div>
             </div>
           </div>
+
+          <div></div>
         </section>
       </main>
     </>
