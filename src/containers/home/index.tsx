@@ -40,7 +40,7 @@ export const Home = () => {
     }
 
     if (typeof window !== 'undefined') {
-      window.addEventListener('wheel', handleWheel)
+      window.addEventListener('wheel', handleWheel, { passive: true })
     }
     return () => {
       if (typeof window !== 'undefined') {
@@ -91,14 +91,17 @@ export const Home = () => {
       })
     }
 
-    gsap.to(figRef.current, {
-      clipPath:
-        active === 0
-          ? 'path("M 0 0 L 1920 0 L 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 L 1920 476.5 L 1920 953 L 0 953 Z")'
-          : 'path("M 0 0 L 960 0 L 960 449.082 C 960 467.898 945.216 475.962 939.84 475.962 C 938.765 475.962 938.765 477.038 939.84 477.038 C 945.216 477.038 960 485.102 960 503.918 L 960 503.918 L 960 953 L 0 953 Z")',
-      duration: 0.5,
-      ease: 'none',
-    })
+    const currentWidth = window.innerWidth
+    const currentHeight = window.innerHeight
+
+    // gsap.to(figRef.current, {
+    //   clipPath:
+    //     active === 0
+    //       ? `path("M 0 0 L ${currentWidth} 0 L ${currentWidth} 476.5 C ${currentWidth} 476.5 ${currentWidth} 476.5 ${currentWidth} 476.5 C ${currentWidth} 476.5 ${currentWidth} 476.5 ${currentWidth} 476.5 C ${currentWidth} 476.5 ${currentWidth} 476.5 ${currentWidth} 476.5 L ${currentWidth} 476.5 L ${currentWidth} 953 L 0 953 Z")`
+    //       : `path("M 0 0 L ${currentWidth / 2} 0 L ${currentWidth / 2} 449.082 C ${currentWidth / 2} 467.898 945.216 475.962 939.84 475.962 C 938.765 475.962 938.765 477.038 939.84 477.038 C 945.216 477.038 ${currentWidth / 2} 485.102 ${currentWidth / 2} 503.918 L ${currentWidth / 2} 503.918 L ${currentWidth / 2} 953 L 0 953 Z")`,
+    //   duration: 0.5,
+    //   ease: 'none',
+    // })
 
     gsap.to(boxRef.current, {
       width: active !== 0 ? '50%' : '100%',
@@ -124,10 +127,10 @@ export const Home = () => {
                   <figure
                     className="relative h-full max-h-screen w-full overflow-hidden"
                     ref={figRef}
-                    style={{
-                      clipPath:
-                        'path("M 0 0 L 1920 0 L 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 C 1920 476.5 1920 476.5 1920 476.5 L 1920 476.5 L 1920 953 L 0 953 Z")',
-                    }}
+                    // style={{
+                    //   clipPath:
+                    //     'path("M 0 0 L ${currentWidth} 0 L ${currentWidth} 476.5 C ${currentWidth} 476.5 ${currentWidth} 476.5 ${currentWidth} 476.5 C ${currentWidth} 476.5 ${currentWidth} 476.5 ${currentWidth} 476.5 C ${currentWidth} 476.5 ${currentWidth} 476.5 ${currentWidth} 476.5 L ${currentWidth} 476.5 L ${currentWidth} 953 L 0 953 Z")',
+                    // }}
                   >
                     <img
                       className="absolute top-0 left-0 h-full max-h-screen w-full origin-[38%_0] scale-100 object-cover object-[0_64.5%] transition-opacity duration-300 ease-linear"
@@ -154,7 +157,14 @@ export const Home = () => {
                       style={{ opacity: 0 }}
                     />
                   </figure>
-                  <ul className="absolute top-1/2 right-[38px] z-[101] list-none text-right text-[20px] font-medium text-white">
+                  <ul
+                    className="absolute top-1/2 right-[38px] z-[101] list-none text-right text-[20px] font-medium text-white"
+                    style={{
+                      opacity: active !== 0 ? 1 : 0,
+                      transition: active !== 0 ? '.5s opacity linear' : '',
+                      transitionDelay: active !== 0 ? '.5s' : '0s',
+                    }}
+                  >
                     <li className="-translate-y-1/2">BLISSO</li>
                     <li>JISOO</li>
                     <li>FILMOGRAPHY</li>

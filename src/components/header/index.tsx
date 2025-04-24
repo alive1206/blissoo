@@ -1,3 +1,5 @@
+'use client'
+
 import { Logo } from '@/components'
 import { cn, MENU_LIST } from '@/utils'
 import { useState } from 'react'
@@ -19,7 +21,7 @@ export const Header: React.FC<Props> = ({ active }) => {
         <div className="w-[135px]" style={{ fill: active === 0 ? '#fff' : '', transition: active === 0 ? 'fill 1s' : '' }}>
           <Logo />
         </div>
-        <div className="flex items-center gap-[60px] text-[18px] font-medium uppercase">
+        <div className="flex items-center gap-[60px] text-[16px] font-medium uppercase">
           {MENU_LIST.map((menu) => (
             <div key={menu.id}>{menu.title}</div>
           ))}
